@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>YourSite.com – UUID, GUID & Developer Tools</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{--bg:#e8f3f0;--panel:#fff;--ink:#0b2a33;--mute:#4f6b72;--line:#cde0dc;--acc:#0b7285;--accink:#fff;--ok:#12805c;--bad:#c62f3b;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#07181d;--panel:#0e2a31;--ink:#e3f2ef;--mute:#8fb0b3;--line:#1d4048;--acc:#ffb703;--accink:#07181d;--ok:#4cd9a3;--bad:#ff7b86}}
+:root[data-theme="dark"]{--bg:#07181d;--panel:#0e2a31;--ink:#e3f2ef;--mute:#8fb0b3;--line:#1d4048;--acc:#ffb703;--accink:#07181d;--ok:#4cd9a3;--bad:#ff7b86}
+*,*::before,*::after{box-sizing:inherit}
+[hidden]{display:none!important}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 "Bricolage Grotesque",system-ui,sans-serif}
+.mono,textarea,input,select,output{font-family:"JetBrains Mono",ui-monospace,Consolas,monospace}
+header{background:#0b4f60;position:sticky;top:0;z-index:5}
+.bar{max-width:1100px;margin:0 auto;padding:10px clamp(18px,4vw,32px);display:flex;align-items:center;gap:16px}
+.brand{font-weight:700;font-size:20px;text-decoration:none;color:#fff;margin-right:18px}
+.menus{display:flex;gap:4px;flex:1}
+.dd{position:relative}
+.dd>button{border:0;background:none;color:#fff;font-size:16px;padding:10px 14px}
+.dd:last-child{margin-left:auto}
+.dd>button:hover,.dd.open>button{background:rgba(255,255,255,.18);filter:none}
+#theme,#menu{background:none;color:#fff;border-color:rgba(255,255,255,.45)}
+.hero{background:#04222b;color:#fff;text-align:center;padding:34px clamp(18px,4vw,32px) 40px}
+.hero h1{font-size:clamp(30px,6vw,56px);margin:0 0 10px}
+.hero .lead{color:#9ccfcd;margin:0 auto}
+.big{margin-top:26px}.big small{display:block;color:#8fd3d0;font-size:18px;margin-bottom:6px}
+.big code{color:#ffd166;font-family:"JetBrains Mono",monospace;font-size:clamp(17px,4.4vw,38px);overflow-wrap:anywhere;margin-right:10px}
+.big .bc{background:#ffb703;color:#04222b;font-weight:700;border:0;padding:10px 16px;vertical-align:middle}
+.big p{margin:18px 0 0}.big a{color:#8fd3d0}
+.dd>button.cur{font-weight:700}
+.panel{display:none;position:absolute;left:0;top:100%;min-width:240px;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:6px;box-shadow:0 8px 24px rgba(0,0,0,.14)}
+.dd.open .panel{display:block}
+.panel a{display:block;padding:7px 10px;border-radius:6px;color:var(--ink);text-decoration:none;font-size:15px}
+.panel a:hover{background:var(--line)}
+.panel a.on{background:var(--acc);color:var(--accink)}
+main{padding:36px clamp(18px,4vw,32px);max-width:860px;margin:0 auto}
+h1{font-size:clamp(28px,5vw,40px);line-height:1.1;margin:0 0 8px;letter-spacing:-.02em}
+.lead{color:var(--mute);margin:0 0 28px;max-width:60ch}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:20px}
+.row{display:flex;flex-wrap:wrap;gap:14px;align-items:flex-end;margin-bottom:14px}
+label{display:flex;flex-direction:column;gap:4px;font-size:14px;color:var(--mute)}
+label.ck{flex-direction:row;align-items:center;gap:6px;color:var(--ink)}
+input[type=number],input[type=text],select,textarea{background:var(--bg);color:var(--ink);border:1px solid var(--line);border-radius:6px;padding:8px 10px;font-size:14px}
+input[type=number]{width:90px}
+textarea{width:100%;min-height:200px;resize:vertical;line-height:1.5}
+button{font:inherit;font-weight:500;border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:6px;padding:8px 16px;cursor:pointer}
+button.p{background:var(--acc);color:var(--accink);border-color:var(--acc)}
+button:hover{filter:brightness(.95)}
+:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+.res{margin-top:14px;font-size:14px}
+.ok{color:var(--ok)}.bad{color:var(--bad)}
+dl{display:grid;grid-template-columns:max-content 1fr;gap:6px 18px;margin:10px 0 0}
+dt{color:var(--mute)}dd{margin:0;overflow-wrap:anywhere}
+.content{margin-top:48px;padding-top:8px;border-top:1px solid var(--line);line-height:1.7}
+.content h2{font-size:24px;line-height:1.2;letter-spacing:-.01em;margin:32px 0 8px}
+.content p,.content li{max-width:68ch}
+.content ul{padding-left:20px}.content li{margin:4px 0}
+.content code{background:var(--line);padding:1px 6px;border-radius:4px;font-size:14px;overflow-wrap:anywhere}
+.content a{color:var(--acc)}
+.content h3{font-size:18px;margin:20px 0 6px}
+.content pre{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:12px 14px;overflow-x:auto;margin:0}
+.content pre code{background:none;padding:0;font-family:"JetBrains Mono",monospace;font-size:14px;overflow-wrap:normal}
+.rel{display:flex;flex-wrap:wrap;gap:8px 20px}
+.content.page{margin-top:0;border-top:0}
+footer{background:#04222b;color:#9ccfcd;margin-top:64px;padding:40px clamp(18px,4vw,32px) 24px}
+.fw{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:28px}
+.fw p{margin:8px 0 0;max-width:34ch;font-size:15px}
+.fb{color:#fff;font-size:20px}
+footer h4{color:#fff;margin:0 0 8px;font-size:16px}
+footer a{display:block;color:#9ccfcd;text-decoration:none;padding:3px 0;font-size:15px}
+footer a:hover{color:#ffd166;text-decoration:underline}
+.cp{max-width:1100px;margin:28px auto 0!important;padding-top:16px;border-top:1px solid #15424e;font-size:14px!important}
+@media(max-width:760px){.fw{grid-template-columns:1fr 1fr}.fw>div:first-child{grid-column:1/-1}}
+#menu{display:none}
+@media(max-width:760px){
+.bar{flex-wrap:wrap;gap:10px}
+#menu{display:inline-block;margin-left:auto}
+.menus{display:none;order:5;flex-basis:100%;flex-direction:column}
+header.open .menus{display:flex}
+.panel{position:static;display:block;border:0;box-shadow:none;padding:0 0 6px 10px}
+.dd>button{text-align:left}
+.dd:last-child{margin-left:0}
+.panel{background:none}
+.panel a{color:#fff}
+.panel a:hover{background:rgba(255,255,255,.15)}
+}
+</style>
+</head>
+<body>
+<header id="hd"><div class="bar"><a class="brand" href="#uuid-generator">YourSite.com</a><div class="menus" id="menus"></div><button id="theme" type="button">Switch theme</button><button id="menu" type="button" aria-expanded="false">Menu</button></div></header>
+<section class="hero" id="hero"></section>
+<main><div id="tool"></div><article class="content" id="content"></article></main>
+<footer><div class="fw"><div><strong class="fb">YourSite.com</strong><p>Free UUID, GUID and developer tools. Everything runs in your browser.</p></div>
+<div><h4>Popular tools</h4><a href="#uuid-generator">UUID Generator</a><a href="#uuid-v7">UUID v7 Generator</a><a href="#guid-generator">GUID Generator</a><a href="#password-generator">Password Generator</a><a href="#json-formatter">JSON Formatter</a></div>
+<div><h4>Company</h4><a href="#about">About Us</a><a href="#contact">Contact Us</a></div>
+<div><h4>Legal</h4><a href="#privacy">Privacy Policy</a><a href="#terms">Terms and Conditions</a><a href="#disclaimer">Disclaimer</a></div></div>
+<p class="cp">&copy; 2026 YourSite.com. All rights reserved.</p></footer>
+<script>
+const NS={DNS:"6ba7b810-9dad-11d1-80b4-00c04fd430c8",URL:"6ba7b811-9dad-11d1-80b4-00c04fd430c8",OID:"6ba7b812-9dad-11d1-80b4-00c04fd430c8",X500:"6ba7b814-9dad-11d1-80b4-00c04fd430c8"};
+const hex=b=>[...b].map(x=>x.toString(16).padStart(2,"0")).join("");
+const fmt=h=>`${h.slice(0,8)}-${h.slice(8,12)}-${h.slice(12,16)}-${h.slice(16,20)}-${h.slice(20)}`;
+const rnd=n=>crypto.getRandomValues(new Uint8Array(n));
+const v4=()=>crypto.randomUUID().replace(/-/g,"");
+function v7(){const b=rnd(16);let t=Date.now();for(let i=5;i>=0;i--){b[i]=t%256;t=Math.floor(t/256)}b[6]=0x70|(b[6]&15);b[8]=0x80|(b[8]&63);return hex(b)}
+async function v5(name,ns){const nb=Uint8Array.from(ns.replace(/-/g,"").match(/../g).map(x=>parseInt(x,16)));const nm=new TextEncoder().encode(name);const all=new Uint8Array(nb.length+nm.length);all.set(nb);all.set(nm,16);const h=new Uint8Array(await crypto.subtle.digest("SHA-1",all)).slice(0,16);h[6]=0x50|(h[6]&15);h[8]=0x80|(h[8]&63);return hex(h)}
+const UU=/^[0-9a-f]{8}-?[0-9a-f]{4}-?[0-9a-f]{4}-?[0-9a-f]{4}-?[0-9a-f]{12}$/i;
+const clean=s=>s.trim().replace(/^[{(]|[})]$/g,"");
+function decode(s){s=clean(s);if(!UU.test(s))return null;const h=s.replace(/-/g,"").toLowerCase();const ver=parseInt(h[12],16);const vn=parseInt(h[16],16);
+const variant=vn<8?"NCS (reserved)":vn<12?"RFC 4122 / 9562":vn<14?"Microsoft (reserved)":"Future (reserved)";
+const o={Canonical:fmt(h),Version:"v"+ver,Variant:variant};
+if(/^0+$/.test(h))o.Note="Nil UUID";else if(/^f+$/.test(h))o.Note="Max UUID";
+if(ver===7){o["Timestamp (UTC)"]=new Date(parseInt(h.slice(0,12),16)).toISOString()}
+else if(ver===1){const t=(BigInt("0x"+h.slice(13,16)+h.slice(8,12)+h.slice(0,8))-122192928000000000n)/10000n;o["Timestamp (UTC)"]=new Date(Number(t)).toISOString();o.Node=h.slice(20)}
+else if(ver===4)o.Note="Random. No embedded data.";else if(ver===5)o.Note="Name-based (SHA-1). No embedded data.";
+return o}
+function show(h,o){let s=fmt(h);if(!o.hy)s=s.replace(/-/g,"");if(o.up)s=s.toUpperCase();if(o.br)s="{"+s+"}";return s}
+
+const T=[];
+const add=(g,id,name,desc,kind,x={})=>T.push({g,id,name,desc,kind,...x});
+add("UUID Tools","uuid-generator","UUID Generator","Create universally unique identifiers. Pick a version, set how many you need, and copy.","uuid",{ver:"v4",pick:1});
+add("UUID Tools","uuid-v4","UUID v4 Generator","Version 4 UUIDs are fully random. The most common choice for unique IDs.","uuid",{ver:"v4"});
+add("UUID Tools","uuid-v5","UUID v5 Generator","Version 5 UUIDs are generated from a name and a namespace. The same input always gives the same UUID.","uuid",{ver:"v5"});
+add("UUID Tools","uuid-v7","UUID v7 Generator","Version 7 UUIDs start with a millisecond timestamp, so they sort by creation time. Good for database keys.","uuid",{ver:"v7"});
+add("UUID Tools","random-uuid","Random UUID Generator","Generate random UUIDs in bulk.","uuid",{ver:"v4"});
+add("UUID Tools","uuid-validator","UUID Validator","Paste a UUID to check that its format is valid and see its version.","validate",{guid:0});
+add("UUID Tools","uuid-decoder","UUID Decoder","Break a UUID into its version, variant and, when present, its timestamp.","decode");
+add("GUID Tools","guid-generator","GUID Generator","Create GUIDs in the format used by Microsoft and .NET. Add braces or uppercase if you need them.","uuid",{ver:"v4",guid:1});
+add("GUID Tools","random-guid","Random GUID Generator","Generate random GUIDs in bulk.","uuid",{ver:"v4",guid:1});
+add("GUID Tools","guid-validator","GUID Validator","Check a GUID. Braces and parentheses are accepted.","validate",{guid:1});
+add("Developer Tools","random-id","Random ID Generator","Short random IDs for URLs, keys and test data.","rid");
+add("Developer Tools","random-string","Random String Generator","Create random strings from the character sets you choose.","rstr");
+add("Developer Tools","password-generator","Password Generator","Strong passwords made in your browser. Nothing is sent anywhere.","pw");
+add("Developer Tools","json-formatter","JSON Formatter","Format, minify and check JSON.","json");
+add("Developer Tools","timestamp-converter","Timestamp Converter","Convert Unix timestamps to dates and back.","ts");
+
+const $=(s,r=document)=>r.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const copyBtn=()=>`<button type="button" data-copy>Copy</button>`;
+function wireCopy(root,get){const b=$("[data-copy]",root);b&&b.addEventListener("click",async()=>{try{await navigator.clipboard.writeText(get());b.textContent="Copied"}catch(e){b.textContent="Select and copy manually"}setTimeout(()=>b.textContent="Copy",1500)})}
+const ck=(id,l,c)=>`<label class="ck"><input type="checkbox" id="${id}" ${c?"checked":""}> ${l}</label>`;
+const num=(id,l,v,mx)=>`<label>${l}<input type="number" id="${id}" value="${v}" min="1" max="${mx}"></label>`;
+
+const R={
+uuid(t,v){const g=t.guid;v.innerHTML=`<div class="card"><div class="row">
+${t.pick?`<label>Version<select id="ver"><option>v4</option><option>v7</option><option>v5</option></select></label>`:""}
+${num("n","How many",5,100)}
+${ck("up","Uppercase",g)}${ck("hy","Hyphens",1)}${g?ck("br","Braces",0):""}
+</div>
+<div class="row" id="v5row" hidden><label>Namespace<select id="ns">${Object.keys(NS).map(k=>`<option>${k}</option>`)}</select></label><label>Name<input type="text" id="nm" value="example.com"></label></div>
+<div class="row"><button class="p" id="go" type="button">Generate</button>${copyBtn()}</div>
+<textarea id="out" readonly aria-label="Generated IDs"></textarea></div>`;
+const get=()=>t.pick?$("#ver").value:t.ver;
+const sync=()=>{$("#v5row").hidden=get()!=="v5"};
+async function run(){const n=Math.max(1,Math.min(100,+$("#n").value||1));const o={up:$("#up").checked,hy:$("#hy").checked,br:g&&$("#br").checked};const ver=get();const out=[];
+if(ver==="v5"){out.push(show(await v5($("#nm").value,NS[$("#ns").value]),o))}
+else for(let i=0;i<n;i++)out.push(show(ver==="v7"?v7():v4(),o));
+$("#out").value=out.join("\n");
+const big=$("#big");if(big){big.innerHTML=`<small>Your Version ${ver.slice(1)} ${g?"GUID":"UUID"}:</small><code></code><button type="button" class="bc" id="bcopy">Copy</button><p><a href="#" id="again">Generate another</a></p>`;$("code",big).textContent=out[0];
+$("#bcopy").onclick=async e=>{const b=e.currentTarget;try{await navigator.clipboard.writeText(out[0]);b.textContent="Copied"}catch(x){b.textContent="Select to copy"}setTimeout(()=>b.textContent="Copy",1500)};
+$("#again").onclick=e=>{e.preventDefault();run()}}}
+$("#go").onclick=run;t.pick&&($("#ver").onchange=()=>{sync();run()});sync();run();wireCopy(v,()=>$("#out").value)},
+validate(t,v){v.innerHTML=`<div class="card"><label>${t.guid?"GUID":"UUID"}<input type="text" id="in" placeholder="123e4567-e89b-12d3-a456-426614174000"></label><div class="res" id="r">Paste a value above.</div></div>`;
+$("#in").oninput=e=>{const s=e.target.value;if(!s.trim()){$("#r").textContent="Paste a value above.";return}const d=decode(s);$("#r").innerHTML=d?`<span class="ok">Valid.</span> ${d.Version}, ${esc(d.Variant)}.`:`<span class="bad">Not valid.</span> Expected 32 hex digits in 8-4-4-4-12 groups.`}},
+decode(t,v){v.innerHTML=`<div class="card"><label>UUID<input type="text" id="in" placeholder="Paste a UUID"></label><div class="res" id="r">Paste a UUID above.</div></div>`;
+$("#in").oninput=e=>{const s=e.target.value;if(!s.trim()){$("#r").textContent="Paste a UUID above.";return}const d=decode(s);$("#r").innerHTML=d?"<dl>"+Object.entries(d).map(([k,x])=>`<dt>${k}</dt><dd>${esc(x)}</dd>`).join("")+"</dl>":`<span class="bad">Not a valid UUID.</span> Check for missing or extra characters.`}},
+rid(t,v){v.innerHTML=`<div class="card"><div class="row">${num("n","How many",5,100)}${num("len","Length",12,64)}<label>Style<select id="st"><option value="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789">Base62</option><option value="0123456789abcdef">Hex</option><option value="0123456789">Numeric</option><option value="0123456789ABCDEFGHJKMNPQRSTVWXYZ">Crockford Base32</option></select></label></div><div class="row"><button class="p" id="go" type="button">Generate</button>${copyBtn()}</div><textarea id="out" readonly aria-label="Generated IDs"></textarea></div>`;
+const run=()=>{const cs=$("#st").value,L=Math.min(64,+$("#len").value||12),n=Math.min(100,+$("#n").value||1),o=[];for(let i=0;i<n;i++)o.push(pick(cs,L));$("#out").value=o.join("\n")};
+$("#go").onclick=run;run();wireCopy(v,()=>$("#out").value)},
+rstr(t,v){v.innerHTML=`<div class="card"><div class="row">${num("n","How many",3,100)}${num("len","Length",32,512)}</div><div class="row">${ck("lo","a-z",1)}${ck("upc","A-Z",1)}${ck("dg","0-9",1)}${ck("sy","Symbols",0)}</div><div class="row"><button class="p" id="go" type="button">Generate</button>${copyBtn()}</div><textarea id="out" readonly aria-label="Generated strings"></textarea></div>`;
+const run=()=>{let cs="";if($("#lo").checked)cs+="abcdefghijklmnopqrstuvwxyz";if($("#upc").checked)cs+="ABCDEFGHIJKLMNOPQRSTUVWXYZ";if($("#dg").checked)cs+="0123456789";if($("#sy").checked)cs+="!@#$%^&*()-_=+[]{};:,.?";if(!cs){$("#out").value="Select at least one character set.";return}const L=Math.min(512,+$("#len").value||32),n=Math.min(100,+$("#n").value||1),o=[];for(let i=0;i<n;i++)o.push(pick(cs,L));$("#out").value=o.join("\n")};
+$("#go").onclick=run;run();wireCopy(v,()=>$("#out").value)},
+pw(t,v){v.innerHTML=`<div class="card"><div class="row">${num("n","How many",3,50)}${num("len","Length",20,128)}</div><div class="row">${ck("lo","a-z",1)}${ck("upc","A-Z",1)}${ck("dg","0-9",1)}${ck("sy","Symbols",1)}</div><div class="row"><button class="p" id="go" type="button">Generate</button>${copyBtn()}</div><textarea id="out" readonly aria-label="Generated passwords"></textarea></div>`;
+const run=()=>{const sets=[["lo","abcdefghijklmnopqrstuvwxyz"],["upc","ABCDEFGHIJKLMNOPQRSTUVWXYZ"],["dg","0123456789"],["sy","!@#$%^&*()-_=+[]{}?"]].filter(s=>$("#"+s[0]).checked);if(!sets.length){$("#out").value="Select at least one character set.";return}const L=Math.max(sets.length,Math.min(128,+$("#len").value||20)),n=Math.min(50,+$("#n").value||1),all=sets.map(s=>s[1]).join(""),o=[];
+for(let i=0;i<n;i++){const c=sets.map(s=>pick(s[1],1));while(c.length<L)c.push(pick(all,1));for(let j=c.length-1;j>0;j--){const k=ri(j+1);[c[j],c[k]]=[c[k],c[j]]}o.push(c.join(""))}$("#out").value=o.join("\n")};
+$("#go").onclick=run;run();wireCopy(v,()=>$("#out").value)},
+json(t,v){v.innerHTML=`<div class="card"><label>Input<textarea id="in" placeholder='{"name":"YourSite","tools":[1,2,3]}'></textarea></label><div class="row" style="margin-top:14px"><button class="p" id="f" type="button">Format</button><button id="m" type="button">Minify</button>${copyBtn()}</div><div class="res" id="r"></div></div>`;
+const go=min=>{try{const j=JSON.parse($("#in").value);$("#in").value=min?JSON.stringify(j):JSON.stringify(j,null,2);$("#r").innerHTML=`<span class="ok">Valid JSON.</span>`}catch(e){$("#r").innerHTML=`<span class="bad">Invalid JSON:</span> ${esc(e.message)}`}};
+$("#f").onclick=()=>go(0);$("#m").onclick=()=>go(1);wireCopy(v,()=>$("#in").value)},
+ts(t,v){v.innerHTML=`<div class="card"><div class="row"><label>Unix timestamp (seconds or milliseconds)<input type="text" id="u"></label><button id="now" type="button">Use now</button></div><div class="res" id="r1"></div><hr style="border:0;border-top:1px solid var(--line);margin:20px 0"><label>Date and time (ISO or any date format)<input type="text" id="d" placeholder="2026-10-08 14:30"></label><div class="res" id="r2"></div></div>`;
+$("#u").oninput=()=>{const s=$("#u").value.trim();if(!s){$("#r1").textContent="";return}let n=Number(s);if(isNaN(n)){$("#r1").innerHTML=`<span class="bad">Enter a number.</span>`;return}if(Math.abs(n)<1e11)n*=1000;const d=new Date(n);$("#r1").innerHTML=isNaN(d)?`<span class="bad">Out of range.</span>`:`<dl><dt>UTC</dt><dd>${d.toISOString()}</dd><dt>Local</dt><dd>${esc(d.toString())}</dd></dl>`};
+$("#now").onclick=()=>{$("#u").value=Math.floor(Date.now()/1000);$("#u").oninput()};
+$("#d").oninput=()=>{const s=$("#d").value.trim();if(!s){$("#r2").textContent="";return}const d=new Date(s);$("#r2").innerHTML=isNaN(d)?`<span class="bad">Could not read that date.</span>`:`<dl><dt>Seconds</dt><dd>${Math.floor(d/1000)}</dd><dt>Milliseconds</dt><dd>${d.getTime()}</dd></dl>`}}
+};
+function ri(n){const m=Math.floor(4294967296/n)*n;let x;do{x=crypto.getRandomValues(new Uint32Array(1))[0]}while(x>=m);return x%n}
+function pick(cs,L){let s="";for(let i=0;i<L;i++)s+=cs[ri(cs.length)];return s}
+
+const C={
+"uuid-generator":[
+["What is a UUID?","A UUID (universally unique identifier) is a 128-bit label written as 32 hexadecimal digits in five groups, like <code>123e4567-e89b-12d3-a456-426614174000</code>. Systems use UUIDs to name records, files, sessions and messages without asking a central server for the next number. Because anyone can make one on their own, two machines can create IDs at the same moment and still avoid clashes."],
+["How to use this generator",["Choose a version. Version 4 is the default and works for most jobs.","Set how many UUIDs you need, up to 100 at a time.","Pick uppercase or hyphen options to match the format your system expects.","Select Generate, then copy. The large UUID at the top is the first result, and the box above holds the full list."]],
+["Which version should you pick?",["<strong>v4</strong> is fully random. Use it when you only need a unique value.","<strong>v7</strong> starts with a timestamp, so new IDs sort in creation order. It is a good fit for database primary keys.","<strong>v5</strong> is built from a name and a namespace. The same input always gives the same UUID, which helps when you need stable IDs."]],
+["Can two UUIDs ever collide?","A v4 UUID has 122 random bits. You would need to create roughly 2.7 quintillion of them before the chance of a single duplicate reached 50%. If you ever see a repeat, a bug or a weak random source is far more likely than bad luck."],
+["Common uses",["Primary keys in databases","Request and trace IDs in APIs and logs","Idempotency keys for payments and retries","Unique file and upload names","Test data and fixtures"]],
+["Is this tool private?","Yes. UUIDs are created in your browser with the Web Crypto API. Nothing you generate is sent to a server or stored."]],
+"uuid-v4":[
+["What is a version 4 UUID?","A version 4 UUID is made almost entirely of random bits. Of its 128 bits, 6 are fixed to mark the version and variant, and the other 122 are random. That is why v4 is the most widely used type: it needs no clock, no network address and no coordination."],
+["How to read one","In <code>f2068f7b-3876-4944-b1e5-87f0e893e6bb</code>, the first digit of the third group is always <code>4</code>, and the first digit of the fourth group is always <code>8</code>, <code>9</code>, <code>a</code> or <code>b</code>."],
+["When to use v4, and when not to",["Use v4 for session IDs, correlation IDs, file names and anything that only needs to be unique.","Think twice before using it as a primary key in a large table. Random values land all over an index. v7 is usually kinder to databases."]]],
+"uuid-v5":[
+["What is a version 5 UUID?","A version 5 UUID is created from two inputs: a namespace and a name. The tool hashes them with SHA-1 and formats the result as a UUID. Give it the same namespace and name tomorrow, or on another machine, and you get exactly the same UUID."],
+["How to use this tool",["Pick a namespace: DNS for domain names, URL for web addresses, OID for object identifiers, or X500 for directory names.","Type the name, such as <code>example.com</code>.","Select Generate."]],
+["When v5 helps",["Giving imported records a stable ID, so re-running an import does not create duplicates.","Turning an email, URL or product code into a UUID without storing a lookup table.","Making IDs that match across services."]],
+["Good to know","A v5 UUID is not secret or random. Anyone who knows the inputs can recreate it. SHA-1 is used here only to spread names evenly, not to protect data. Version 3 works the same way but uses MD5."]],
+"uuid-v7":[
+["What is a version 7 UUID?","Version 7 is a newer UUID type defined in RFC 9562. The first 48 bits hold the Unix time in milliseconds, and the rest are random. Because the time comes first, v7 UUIDs sort in the order they were created."],
+["Why developers like v7",["New rows are added near the end of a database index instead of at random spots, which keeps inserts fast.","You can sort by ID to get roughly chronological order.","It still works like any other UUID in columns, APIs and libraries."]],
+["Things to keep in mind","A v7 UUID reveals when it was created. Avoid it where that detail should stay private. Two IDs made within the same millisecond are not guaranteed to be in order. Use the UUID Decoder to see the timestamp inside any v7 value."]],
+"random-uuid":[
+["Generate random UUIDs in bulk","This tool makes random (version 4) UUIDs, up to 100 per click. Each value comes from your browser's secure random number generator, so it is suitable for IDs in real systems as well as test data."],
+["Ways people use it",["Seeding a database with sample rows","Filling a spreadsheet or CSV with unique IDs","Creating mock API responses","Naming temporary files"]],
+["Tip","Results appear one per line. Copy the whole box and paste it into your editor or spreadsheet. Turn off hyphens if your system stores UUIDs as 32 plain characters."]],
+"uuid-validator":[
+["What makes a UUID valid?","A valid UUID has 32 hexadecimal digits (0-9 and a-f), normally grouped 8-4-4-4-12 with hyphens. This validator also accepts values without hyphens and values wrapped in braces or parentheses. If the value passes, it shows the version and variant."],
+["Common reasons a UUID fails",["It is too short or too long. Count the digits.","It contains a character outside 0-9 and a-f, such as g or o.","It has spaces or line breaks inside it.","The hyphens are in the wrong places."]],
+["What this check does not tell you","It checks format only. A valid UUID might not exist in your database, and a made-up value in the right shape will also pass. The all-zero nil UUID is valid too."]],
+"uuid-decoder":[
+["What is inside a UUID?","A UUID is more than a random-looking string. A few digits carry meaning. The 13th hex digit is the version, and the first digit of the fourth group shows the variant. Some versions store more."],
+["What the decoder shows",["<strong>Version and variant</strong> for any UUID.","<strong>Timestamp</strong> for v7 (Unix milliseconds) and v1 (100-nanosecond intervals since 1582).","<strong>Node</strong> for v1, which was often based on a network card address.","A note for v4 and v5, which carry no readable data."]],
+["When it is useful","Decoding helps when debugging logs, checking which version a library produced, or confirming that an ID really is time-ordered."]],
+"guid-generator":[
+["GUID or UUID: what is the difference?","A GUID (globally unique identifier) is Microsoft's name for a UUID. Both are 128-bit values with the same layout. The words are used interchangeably, though GUIDs in the Microsoft world are often written in uppercase and wrapped in braces, like <code>{F2068F7B-3876-4944-B1E5-87F0E893E6BB}</code>."],
+["Where GUIDs are used",["C# and .NET (<code>Guid.NewGuid()</code>)","SQL Server <code>uniqueidentifier</code> columns","Windows registry keys and COM class IDs","Visual Studio project and solution files"]],
+["How to use this tool","Choose how many you need, then turn on Braces or Uppercase to match your format. The generator creates random (v4) GUIDs. If you use GUIDs as clustered keys in SQL Server, random values can fragment the index."]],
+"random-guid":[
+["Random GUIDs in bulk","Generate up to 100 random GUIDs at once. They are version 4 values made with your browser's secure random generator."],
+["Handy for",["Seed scripts and migrations","Unit test fixtures","Sample JSON and XML files","Placeholder IDs in documentation"]],
+["Formatting tip","Use Braces and Uppercase for the classic Windows look, or leave them off for the plain lowercase form most web APIs expect."]],
+"guid-validator":[
+["Check any GUID","Paste a GUID and the validator tells you if the format is correct. It accepts the plain form, the form without hyphens, and forms wrapped in braces <code>{}</code> or parentheses <code>()</code>."],
+["If your GUID is rejected",["Look for characters that are not hexadecimal.","Make sure there are exactly 32 hex digits.","Remove extra spaces from the start, end or middle."]],
+["Format only","This tool checks the shape of the value, not whether it exists in your system."]],
+"random-id":[
+["Short IDs for URLs and keys","A full UUID is long. For short links, invite codes or order numbers, a shorter random ID is often friendlier. Choose a length and a character style, and the tool creates as many as you need."],
+["Pick a style",["<strong>Base62</strong> uses letters and digits. It is compact and URL-safe.","<strong>Hex</strong> is familiar to developers.","<strong>Numeric</strong> is easy to read out loud, but needs more characters.","<strong>Crockford Base32</strong> skips letters that look alike, such as I, L, O and U."]],
+["How long should it be?","Length decides how many IDs you can make before a repeat becomes likely. Twelve Base62 characters give about 71 bits of randomness. Eight hex characters give only 32 bits, which is fine for small sets and risky for large ones."]],
+"random-string":[
+["Create random strings","Pick the length and character sets, and the tool generates random strings made from them. Everything is made in your browser with secure random numbers."],
+["Common uses",["API keys and test tokens","Salt and seed values","Sample data for forms and databases","Temporary file or folder names"]],
+["Need a password instead?","Use the Password Generator. It makes sure every selected character type appears at least once."]],
+"password-generator":[
+["How to make a strong password","Length matters most. Each extra character multiplies the work needed to guess a password. Aim for at least 16 characters, and use 20 or more for important accounts. Mixing letters, digits and symbols adds even more strength."],
+["Good habits",["Use a different password for every account.","Store passwords in a password manager so you do not need to remember them.","Turn on two-factor authentication where you can.","Never share a password in chat or email."]],
+["How this tool works","Passwords are created in your browser with the Web Crypto API. They are never sent or saved. Each password includes at least one character from every set you tick, then the characters are shuffled."]],
+"json-formatter":[
+["Format, minify and check JSON","Paste your JSON and select Format to indent it so it is easy to read. Select Minify to remove all extra spaces and shrink it for sending over a network. If the JSON has a mistake, the error message tells you what the parser found."],
+["Common JSON mistakes",["A trailing comma after the last item","Single quotes instead of double quotes","Keys that are not wrapped in double quotes","Comments, which JSON does not allow","Missing commas or brackets"]],
+["Private by design","Your JSON is processed in the browser and never leaves your device, so it is safe to paste configuration and API responses."]],
+"timestamp-converter":[
+["What is a Unix timestamp?","A Unix timestamp counts the time since 1 January 1970, 00:00:00 UTC. Many systems, databases and APIs store dates this way because a single number is easy to compare and sort."],
+["Seconds or milliseconds?","A 10-digit number, like 1790000000, is in seconds. A 13-digit number is in milliseconds, which JavaScript and Java use. This tool detects which one you pasted and shows the date in both UTC and your local time."],
+["Convert a date to a timestamp","Type a date such as <code>2026-10-08 14:30</code> in the second box to get the seconds and milliseconds. Dates without a time zone are read as your local time."],
+["The year 2038 problem","Systems that store timestamps as 32-bit signed numbers run out of room on 19 January 2038. Modern systems use 64 bits and are not affected."]]
+};
+const P={
+about:{name:"About Us",desc:"Simple, free tools for people who work with IDs, data and code.",html:`
+<h2>Who we are</h2><p>YourSite.com is a collection of free online tools for developers, testers and anyone who needs a unique ID, a strong password or a tidy block of JSON. We started with UUID and GUID tools because they are used everywhere, and we are adding more developer tools over time.</p>
+<h2>What we believe</h2><ul><li><strong>Free to use.</strong> No sign-up, no limits on everyday use.</li><li><strong>Private by design.</strong> Our tools run in your browser. What you type or generate is not sent to our servers.</li><li><strong>Clear and fast.</strong> Each tool does one job, and explains it in plain words.</li><li><strong>Accurate.</strong> We follow the published standards, such as RFC 9562 for UUIDs, and we fix mistakes quickly.</li></ul>
+<h2>What you can do here</h2><p>Generate UUID versions 4, 5 and 7, validate and decode UUIDs, create GUIDs for Microsoft and .NET work, make random IDs, strings and passwords, format JSON, and convert Unix timestamps.</p>
+<h2>Tell us what to build next</h2><p>Missing a tool, or found something that does not look right? <a href="#contact">Contact us</a>. We read every message.</p>`},
+contact:{name:"Contact Us",desc:"Questions, bug reports and ideas are welcome.",html:`
+<h2>Send us a message</h2><p>Email us at <a href="mailto:contact@yoursite.com">contact@yoursite.com</a>, or fill in the form below and it will open in your email app.</p>
+<div class="card" style="max-width:560px"><label>Your name<input type="text" id="cn"></label><br><label>Message<textarea id="cm" style="min-height:140px;font-family:inherit"></textarea></label><div class="row" style="margin:14px 0 0"><button class="p" id="send" type="button">Send message</button></div><div class="res" id="cs"></div></div>
+<h2>What to write to us about</h2><ul><li>A bug or wrong result in a tool. Please say which tool and what you entered.</li><li>A tool or feature you would like to see.</li><li>Business and advertising enquiries.</li><li>Privacy requests and legal notices.</li></ul>
+<p>We aim to reply within a few working days.</p>`,init(){$("#send").onclick=()=>{const n=$("#cn").value.trim(),m=$("#cm").value.trim();if(!m){$("#cs").innerHTML='<span class="bad">Write a message first.</span>';return}$("#cs").textContent="Opening your email app. If nothing opens, email contact@yoursite.com.";location.href="mailto:contact@yoursite.com?subject="+encodeURIComponent("Message from "+(n||"a visitor"))+"&body="+encodeURIComponent(m)}}},
+privacy:{name:"Privacy Policy",desc:"Last updated: October 8, 2026",html:`
+<h2>Summary</h2><p>Our tools run in your browser. The IDs, passwords, JSON and other text you create or paste into them are not sent to us and are not stored on our servers.</p>
+<h2>Information we do not collect</h2><p>We do not ask you to create an account, and we do not collect your name, email address or the content you enter into any tool.</p>
+<h2>Information that may be collected automatically</h2><p>Like most websites, our hosting provider may keep basic server logs, such as your IP address, browser type, the pages requested and the time. We may also use privacy-friendly analytics to learn which tools are popular. This information is used to keep the site running, secure it and improve it.</p>
+<h2>Cookies and local storage</h2><p>The site itself does not need cookies to work. If we add analytics or advertising in future, those services may set cookies, and we will update this page to say so.</p>
+<h2>Third-party services</h2><p>Pages load fonts from Google Fonts, which may receive your IP address when the font is requested. Links on this site may lead to other websites, and we are not responsible for their privacy practices.</p>
+<h2>Children</h2><p>This site is a general developer resource and is not directed at children under 13.</p>
+<h2>Your choices</h2><p>You can block cookies in your browser settings. To ask a question about your data, <a href="#contact">contact us</a>.</p>
+<h2>Changes to this policy</h2><p>If we change this policy, we will post the new version here and update the date at the top.</p>`},
+terms:{name:"Terms and Conditions",desc:"Last updated: October 8, 2026",html:`
+<h2>1. Agreement</h2><p>By using YourSite.com you agree to these terms. If you do not agree, please do not use the site.</p>
+<h2>2. Use of the tools</h2><p>The tools are free to use for personal and commercial work. You agree not to misuse the site, including by attempting to disrupt it, overload it with automated requests, or use it for anything unlawful.</p>
+<h2>3. Your content</h2><p>Anything you enter stays in your browser. You are responsible for what you create with the tools and how you use it.</p>
+<h2>4. Our content</h2><p>The text, design and code of this site belong to YourSite.com or its licensors. You may link to any page. Please do not copy the site's content in bulk without permission.</p>
+<h2>5. No warranty</h2><p>The site and tools are provided "as is" and "as available", without warranties of any kind. We do not promise that results will be error-free or that the site will always be available.</p>
+<h2>6. Limitation of liability</h2><p>To the fullest extent allowed by law, YourSite.com is not liable for any loss or damage arising from your use of the site or from relying on its results.</p>
+<h2>7. Changes</h2><p>We may update these terms or the tools at any time. Continued use of the site means you accept the updated terms.</p>
+<h2>8. Contact</h2><p>Questions about these terms? <a href="#contact">Contact us</a>.</p>`},
+disclaimer:{name:"Disclaimer",desc:"Please read before relying on any result.",html:`
+<h2>General information</h2><p>The tools and articles on YourSite.com are provided for general information and convenience. We work hard to keep them accurate, but we cannot guarantee that every result is correct for your situation.</p>
+<h2>Security-sensitive use</h2><p>Generated passwords and random values use your browser's secure random number generator. Even so, for production secrets and high-risk systems, follow your organisation's security guidelines and use vetted, audited tools.</p>
+<h2>Standards and compatibility</h2><p>UUID and GUID formats follow published standards, but software can differ in how it stores, sorts or displays them. Test in your own environment before depending on a specific format.</p>
+<h2>External links</h2><p>We are not responsible for the content of websites we link to.</p>`}
+};
+C["uuid-generator"].push(
+["UUID format and structure","A UUID is 128 bits long. Written out, it is 36 characters: 32 hexadecimal digits and 4 hyphens in the pattern 8-4-4-4-12. The 13th digit tells you the version, and the 17th digit shows the variant. Without hyphens, the same value is 32 characters, which some databases and APIs prefer."],
+["UUID v4 vs v7 vs v5",["<strong>v4</strong>: random, no order, best when you only need uniqueness.","<strong>v7</strong>: time-ordered plus random, best for database keys and sorted logs.","<strong>v5</strong>: name-based and repeatable, best when the same input must always map to the same ID."]],
+["UUID vs GUID","They are the same 128-bit identifier. UUID is the name used in standards and most languages, and GUID is Microsoft's name. Need Microsoft-style output with braces? Use the <a href=\"#guid-generator\">GUID Generator</a>."]);
+const CODE={
+"uuid-generator":[["JavaScript","const id = crypto.randomUUID();"],["Python","import uuid\nprint(uuid.uuid4())"],["C#","var id = Guid.NewGuid();"],["Java","UUID id = UUID.randomUUID();"],["PostgreSQL","SELECT gen_random_uuid();"],["Go","id := uuid.New() // github.com/google/uuid"]],
+"uuid-v4":[["JavaScript","crypto.randomUUID()"],["Python","uuid.uuid4()"],["PHP (ramsey/uuid)","Uuid::uuid4()->toString();"]],
+"uuid-v5":[["Python","import uuid\nuuid.uuid5(uuid.NAMESPACE_DNS, \"python.org\")\n# 886313e1-3b8a-5372-9b90-0c9aee199e5d"],["JavaScript (uuid package)","import { v5 } from \"uuid\";\nv5(\"example.com\", v5.DNS);"]],
+"uuid-v7":[["JavaScript (uuid package)","import { v7 } from \"uuid\";\nv7();"],["Python 3.14+","import uuid\nuuid.uuid7()"],["PostgreSQL 18+","SELECT uuidv7();"]],
+"random-uuid":[["JavaScript","Array.from({ length: 10 }, () => crypto.randomUUID());"],["Python","[str(uuid.uuid4()) for _ in range(10)]"]],
+"guid-generator":[["C#","Guid.NewGuid().ToString(\"B\").ToUpper();\n// {F2068F7B-3876-4944-B1E5-87F0E893E6BB}"],["PowerShell","[guid]::NewGuid()"],["SQL Server","SELECT NEWID();"]],
+"random-guid":[["C#","Enumerable.Range(0, 10).Select(_ => Guid.NewGuid());"],["PowerShell","1..10 | ForEach-Object { [guid]::NewGuid() }"]],
+"json-formatter":[["JavaScript","JSON.stringify(obj, null, 2);"],["Python","json.dumps(obj, indent=2)"],["Command line (jq)","jq . file.json"]],
+"timestamp-converter":[["JavaScript","Math.floor(Date.now() / 1000);\nnew Date(1790000000 * 1000).toISOString();"],["Python","import time\nint(time.time())"],["Linux / macOS","date +%s"]]
+};
+const F={
+"uuid-generator":[["Is this UUID generator free?","Yes. It is free, needs no sign-up and has no daily limit."],["Are the UUIDs truly unique?","Version 4 UUIDs contain 122 random bits, so the chance of a duplicate is vanishingly small in any real system."],["Can I generate UUIDs in bulk?","Yes. Set How many to any number up to 100 and select Generate, then copy the list."],["Are the UUIDs generated on a server?","No. They are generated in your browser, so nothing is uploaded or stored."]],
+"uuid-v4":[["What does the 4 in UUID v4 mean?","It is the version number. It marks the UUID as randomly generated."],["Is UUID v4 safe to use as a database key?","It works, but random keys scatter across an index. For large tables, v7 is usually faster."],["Is UUID v4 secure for secrets?","A v4 UUID from a secure random source is unguessable, but use a dedicated token generator for secrets such as API keys."]],
+"uuid-v5":[["Does the same name always give the same v5 UUID?","Yes, as long as the namespace and name are exactly the same, including case and spaces."],["What is the difference between v3 and v5?","Both are name-based. v3 uses MD5 and v5 uses SHA-1. v5 is preferred."],["Can I use my own namespace?","Yes. Any valid UUID can be a namespace. This tool offers the four standard ones."]],
+"uuid-v7":[["Is UUID v7 an official standard?","Yes. It was published in RFC 9562 in 2024."],["Why is v7 better than v4 for databases?","Its timestamp prefix keeps new records together in the index, which reduces page splits and speeds up inserts."],["Can I get the creation time from a v7 UUID?","Yes. Paste it into the UUID Decoder to see the timestamp."]],
+"random-uuid":[["Is a random UUID the same as v4?","Yes. A random UUID is a version 4 UUID."],["How many can I make at once?","Up to 100 per click."]],
+"uuid-validator":[["Does a valid UUID mean it exists?","No. The validator checks the format only."],["Are uppercase UUIDs valid?","Yes. UUIDs are case-insensitive."],["Is the nil UUID valid?","Yes. 00000000-0000-0000-0000-000000000000 is a valid special value."]],
+"uuid-decoder":[["Can I decode a v4 UUID?","You can see its version and variant, but v4 holds only random bits, so there is no hidden data."],["Which UUIDs contain a timestamp?","Versions 1, 6 and 7. This tool decodes v1 and v7."]],
+"guid-generator":[["Is a GUID the same as a UUID?","Yes. Both are 128-bit identifiers with the same format."],["Why do GUIDs have braces?","Microsoft tools often write GUIDs as {xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx}. Tick Braces to match."],["What version of GUID does this make?","Random (version 4), which is what .NET's Guid.NewGuid() creates."]],
+"random-guid":[["Are random GUIDs unique?","For practical purposes, yes. They are 122 bits of randomness."],["Can I copy them into SQL?","Yes. Keep the hyphens and add quotes around each value."]],
+"guid-validator":[["Does a GUID need braces?","No. They are optional, and this validator accepts both forms."],["Why is my GUID invalid?","The usual causes are wrong length, non-hex characters or stray spaces."]],
+"random-id":[["Are random IDs unique?","They are random, not guaranteed unique. Longer IDs make repeats extremely unlikely."],["Which style is best for URLs?","Base62 is compact and URL-safe."]],
+"random-string":[["Can I use random strings as passwords?","You can, but the Password Generator is better because it guarantees a mix of character types."],["Are the strings random enough for tokens?","They use your browser's secure random generator. Use 32 or more characters for tokens."]],
+"password-generator":[["How long should my password be?","At least 16 characters for most accounts, and 20 or more for email, banking and password managers."],["Is it safe to generate passwords online?","Here, passwords are created in your browser and never sent anywhere."],["Should I include symbols?","Symbols add strength, but length matters more. Some sites reject certain symbols, so untick the option if needed."]],
+"json-formatter":[["Why is my JSON invalid?","The most common causes are trailing commas, single quotes and unquoted keys."],["Does the formatter upload my JSON?","No. It runs in your browser."],["What is the difference between format and minify?","Format adds indentation for reading. Minify removes whitespace to make the data smaller."]],
+"timestamp-converter":[["Is my timestamp in seconds or milliseconds?","Count the digits. 10 means seconds, and 13 means milliseconds."],["What time zone is a Unix timestamp in?","It is always UTC. Only the displayed date changes with time zone."]]
+};
+function content(t){const c=C[t.id]||[];let h=c.map(([a,b])=>`<h2>${a}</h2>`+(Array.isArray(b)?`<ul>${b.map(x=>`<li>${x}</li>`).join("")}</ul>`:`<p>${b}</p>`)).join("");
+const cd=CODE[t.id];if(cd)h+=`<h2>Code examples</h2>`+cd.map(([l,x])=>`<h3>${l}</h3><pre><code>${esc(x)}</code></pre>`).join("");
+const f=F[t.id];if(f)h+=`<h2>Frequently asked questions</h2>`+f.map(([q,a])=>`<h3>${q}</h3><p>${a}</p>`).join("");
+const rel=T.filter(x=>x.g===t.g&&x.id!==t.id);return h+`<h2>Related tools</h2><p class="rel">`+rel.map(x=>`<a href="#${x.id}">${x.name}</a>`).join("")+`</p>`}
+function seo(t,title){document.title=title;let m=document.querySelector('meta[name=description]');if(!m){m=document.createElement("meta");m.name="description";document.head.appendChild(m)}m.content=t.desc;
+let l=document.getElementById("ld");if(l)l.remove();const f=F[t.id];if(f){l=document.createElement("script");l.type="application/ld+json";l.id="ld";l.textContent=JSON.stringify({"@context":"https://schema.org","@type":"FAQPage",mainEntity:f.map(([q,a])=>({"@type":"Question",name:q,acceptedAnswer:{"@type":"Answer",text:a}}))});document.head.appendChild(l)}}
+const groups=[...new Set(T.map(t=>t.g))];
+$("#menus").innerHTML=groups.map(g=>`<div class="dd"><button type="button" aria-expanded="false">${g} &#9662;</button><div class="panel">${T.filter(t=>t.g===g).map(t=>`<a href="#${t.id}" data-id="${t.id}">${t.name}</a>`).join("")}</div></div>`).join("");
+const closeAll=()=>document.querySelectorAll(".dd").forEach(d=>{d.classList.remove("open");d.firstElementChild.setAttribute("aria-expanded","false")});
+$("#menus").addEventListener("click",e=>{const b=e.target.closest(".dd>button");if(!b)return;const d=b.parentElement,was=d.classList.contains("open");closeAll();if(!was){d.classList.add("open");b.setAttribute("aria-expanded","true")}});
+document.addEventListener("click",e=>{if(!e.target.closest(".dd"))closeAll()});
+addEventListener("keydown",e=>{if(e.key==="Escape")closeAll()});
+function route(){const id=location.hash.slice(1),pg=P[id],t=pg?null:(T.find(x=>x.id===id)||T[0]);
+document.querySelectorAll(".panel a").forEach(a=>a.classList.toggle("on",!!t&&a.dataset.id===t.id));
+document.querySelectorAll(".dd").forEach(d=>d.firstElementChild.classList.toggle("cur",!!d.querySelector("a.on")));
+closeAll();$("#hd").classList.remove("open");$("#menu").setAttribute("aria-expanded","false");
+$("#content").classList.toggle("page",!!pg);
+if(pg){document.title=pg.name+" – YourSite.com";$("#hero").innerHTML=`<h1>${pg.name}</h1><p class="lead">${pg.desc}</p>`;$("#tool").innerHTML="";$("#content").innerHTML=pg.html;pg.init&&pg.init();window.scrollTo(0,0);return}
+seo(t,t.name+" Online – Free | YourSite.com");$("#hero").innerHTML=`<h1>${t.name}</h1><p class="lead">${t.desc}</p>`+(t.kind==="uuid"?'<div class="big" id="big"></div>':"");R[t.kind](t,$("#tool"));$("#content").innerHTML=content(t);window.scrollTo(0,0)}
+$("#menu").onclick=()=>{const o=$("#hd").classList.toggle("open");$("#menu").setAttribute("aria-expanded",o)};
+$("#theme").onclick=()=>{const r=document.documentElement;const dark=r.dataset.theme?r.dataset.theme==="dark":matchMedia("(prefers-color-scheme:dark)").matches;r.dataset.theme=dark?"light":"dark"};
+addEventListener("hashchange",route);route();
+</script>
+</body>
+</html>
