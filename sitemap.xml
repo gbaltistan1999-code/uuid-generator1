@@ -1,19 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://www.uuidgenerator.app/</loc></url>
+  <url><loc>https://www.uuidgenerator.app/uuid-v1-generator</loc></url>
+  <url><loc>https://www.uuidgenerator.app/uuid-v2-generator</loc></url>
+  <url><loc>https://www.uuidgenerator.app/uuid-v3-generator</loc></url>
   <url><loc>https://www.uuidgenerator.app/uuid-v4-generator</loc></url>
   <url><loc>https://www.uuidgenerator.app/uuid-v5-generator</loc></url>
+  <url><loc>https://www.uuidgenerator.app/uuid-v6-generator</loc></url>
   <url><loc>https://www.uuidgenerator.app/uuid-v7-generator</loc></url>
+  <url><loc>https://www.uuidgenerator.app/uuid-v8-generator</loc></url>
   <url><loc>https://www.uuidgenerator.app/random-uuid-generator</loc></url>
   <url><loc>https://www.uuidgenerator.app/bulk-uuid-generator</loc></url>
   <url><loc>https://www.uuidgenerator.app/uuid-generator-with-braces</loc></url>
   <url><loc>https://www.uuidgenerator.app/uuid-generator-without-dashes</loc></url>
   <url><loc>https://www.uuidgenerator.app/guid-generator</loc></url>
+  <url><loc>https://www.uuidgenerator.app/random-guid-generator</loc></url>
+  <url><loc>https://www.uuidgenerator.app/guid-v4-generator</loc></url>
   <url><loc>https://www.uuidgenerator.app/guid-v7-generator</loc></url>
   <url><loc>https://www.uuidgenerator.app/comb-guid-generator</loc></url>
-  <url><loc>https://www.uuidgenerator.app/sql-server-guid-generator</loc></url>
+  <url><loc>https://www.uuidgenerator.app/bulk-guid-generator</loc></url>
   <url><loc>https://www.uuidgenerator.app/guid-generator-with-braces</loc></url>
   <url><loc>https://www.uuidgenerator.app/guid-generator-without-dashes</loc></url>
+  <url><loc>https://www.uuidgenerator.app/sql-server-guid-generator</loc></url>
+  <url><loc>https://www.uuidgenerator.app/net-guid-generator</loc></url>
+  <url><loc>https://www.uuidgenerator.app/online-guid-generator</loc></url>
+  <url><loc>https://www.uuidgenerator.app/guid-generator-for-csharp</loc></url>
   <url><loc>https://www.uuidgenerator.app/about</loc></url>
   <url><loc>https://www.uuidgenerator.app/faq</loc></url>
   <url><loc>https://www.uuidgenerator.app/contact</loc></url>
